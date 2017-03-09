@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Topics</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>Topcis</h3>
+  <div>
+    <div class="title">
+      {{ topic.title}}
+    </div>
+    <div class="content">
+      {{ topic.content}}
+    </div>
+  </div>
+  <li *ngFor="let topic of topics" (click)="onSelect(topic)">
+    <span>
+      {{ topic.id }}
+    </span>
+    <span>
+      {{ topic.title }}
+    </span>
+  </li>
+
+</ion-content>

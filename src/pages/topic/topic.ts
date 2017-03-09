@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { Topic } from '../topics/topic';
+import { TopicService } from '../../providers/topic-service';
 /*
   Generated class for the Topic page.
 
@@ -9,14 +11,27 @@ import { NavController, NavParams } from 'ionic-angular';
 */
 @Component({
   selector: 'page-topic',
-  templateUrl: 'topic.html'
+  templateUrl: 'topic.html',
+	providers: [TopicService]
 })
 export class TopicPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  topic: Topic
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private topicService: TopicService) {
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TopicPage');
   }
 
+	ngOnInit(): void {
+		this.getTopic()
+	}
+
+	getTopic(): void {
+		this.topicService.getTopicById(this.navParams.get('id')).then(
+			topic => this.topic = topic
+		);
+	}
 }

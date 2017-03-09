@@ -19,18 +19,7 @@ import { TopicService } from '../../providers/topic-service';
 })
 export class TopicsPage {
 
-  topic: Topic = {
-    id: '1',
-    title: 'asf'
-  };
-  topics: Topic[] = [
-  { id: '1', title: 'asd1' },
-  { id: '2', title: 'asd2' },
-  { id: '3', title: 'asd3' },
-  { id: '4', title: 'asd4' },
-  { id: '5', title: 'asd5' },
-  { id: '6', title: 'asd6' }
-];
+  topics: Topic[] = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private topicService: TopicService) {
@@ -46,7 +35,7 @@ export class TopicsPage {
 
 	onSelect(topic: Topic): void {
 		console.log(topic)
-		this.navCtrl.push(TopicPage)
+		this.navCtrl.push(TopicPage, {id: topic.id})
 	}
 
 	getTopics(): void {

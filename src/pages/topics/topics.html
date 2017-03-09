@@ -9,14 +9,6 @@
 
 <ion-content padding>
   <h3>Topcis</h3>
-  <div>
-    <div class="title">
-      {{ topic.title}}
-    </div>
-    <div class="content">
-      {{ topic.content}}
-    </div>
-  </div>
   <li *ngFor="let topic of topics" (click)="onSelect(topic)">
     <span>
       {{ topic.id }}

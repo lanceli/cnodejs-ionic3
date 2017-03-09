@@ -15,4 +15,14 @@
 
 <ion-content padding>
 
+    <div class="topic-info" *ngIf="topic">
+      {{ topic.id}}
+      <div class="title">
+        {{ topic.title}}
+      </div>
+      <div class="content">
+        {{ topic.content}}
+      </div>
+    </div>
+
 </ion-content>

@@ -14,21 +14,15 @@ import { Topic } from '../pages/topics/topic';
 @Injectable()
 export class TopicService {
   private topicsUrl = 'https://cnodejs.org/api/v1/topics'
-  topics: Topic[] = [
-  { id: '1', title: 'asd1' },
-  { id: '2', title: 'asd2' },
-  { id: '3', title: 'asd3' },
-  { id: '4', title: 'asd4' },
-  { id: '5', title: 'asd5' },
-  { id: '6', title: 'asd6' }
-  ]
+  private topicUrl = 'https://cnodejs.org/api/v1/topic'
+  topics: Topic[] = []
 
   constructor(public http: Http) {
     console.log('Hello TopicService Provider');
   }
 
-  getTopics(): Promise<Topic[]> {
-    return this.http.get(this.topicsUrl)
+  getTopicById(id: string): Promise<Topic>{
+    return this.http.get(`${this.topicUrl}/${id}`)
       .toPromise()
       .then(
         (resposne) => {
@@ -36,6 +30,20 @@ export class TopicService {
           return resposne.json().data as Topic[]
         }
       )
+  }
+  getTopics(): Promise<Topic[]> {
+    if (this.topics.length) {
+      return Promise.resolve(this.topics)
+    } else {
+      return this.http.get(this.topicsUrl)
+        .toPromise()
+        .then(
+          (resposne) => {
+            console.log(resposne);
+            return resposne.json().data as Topic[]
+          }
+        )
+    }
   }
 
 }

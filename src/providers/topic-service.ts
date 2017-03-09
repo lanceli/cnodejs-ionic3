@@ -13,8 +13,11 @@ import { Topic } from '../pages/topics/topic';
 */
 @Injectable()
 export class TopicService {
-  private topicsUrl = 'https://cnodejs.org/api/v1/topics'
-  private topicUrl = 'https://cnodejs.org/api/v1/topic'
+  private topicsUrl: string = 'https://cnodejs.org/api/v1/topics'
+  private topicUrl: string = 'https://cnodejs.org/api/v1/topic'
+  private currentTab: string = 'all'
+  private nextPage: number = 2
+  //private hasNextPage: boolean = true
   topics: Topic[] = []
 
   constructor(public http: Http) {
@@ -31,19 +34,26 @@ export class TopicService {
         }
       )
   }
-  getTopics(): Promise<Topic[]> {
-    if (this.topics.length) {
-      return Promise.resolve(this.topics)
-    } else {
-      return this.http.get(this.topicsUrl)
-        .toPromise()
-        .then(
-          (resposne) => {
-            console.log(resposne);
-            return resposne.json().data as Topic[]
-          }
-        )
-    }
+  getTopics(tab: string = 'all', page: number = 1, limit: number = 40): Promise<Topic[]> {
+    return this.http.get(`${this.topicsUrl}?tab=${tab}&page=${page}&limit=${limit}`)
+      .toPromise()
+      .then(
+        (resposne) => {
+          console.log(resposne);
+          return resposne.json().data as Topic[]
+        }
+      );
+  }
+
+  pagination(): Promise<Topic[]> {
+    console.log(`current tab: ${this.currentTab}, next page ${this.nextPage}`);
+    return this.getTopics(this.currentTab, this.nextPage).then(
+      (topics) => {
+        this.nextPage++;
+        this.topics = this.topics.concat(topics)
+        return Promise.resolve(this.topics);
+      }
+    );
   }
 
 }

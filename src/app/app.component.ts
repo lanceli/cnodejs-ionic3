@@ -13,7 +13,7 @@ import { TopicsPage } from '../pages/topics/topics';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Page1;
+  rootPage: any = TopicsPage;
 
   pages: Array<{title: string, component: any}>;
 

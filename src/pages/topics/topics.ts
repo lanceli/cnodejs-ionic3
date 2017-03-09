@@ -44,4 +44,14 @@ export class TopicsPage {
 		);
 	}
 
+  loadMore(infiniteScroll): void {
+    console.log('do infinite')
+    this.topicService.pagination().then(
+      (topics) => {
+        this.topics = this.topics.concat(topics)
+        infiniteScroll.complete();
+      }
+    );
+  }
+
 }

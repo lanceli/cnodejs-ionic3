@@ -8,19 +8,21 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Topcis</h3>
-  <li *ngFor="let topic of topics" (click)="onSelect(topic)">
-    <span>
-      {{ topic.id }}
-    </span>
-    <span>
-      {{ topic.title }}
-    </span>
-  </li>
-
-   <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-     <ion-infinite-scroll-content></ion-infinite-scroll-content>
-   </ion-infinite-scroll>
-
-
+  <ion-list [virtualScroll]="topics" class="topics">
+    <ion-item *virtualItem="let topic" (click)="onSelect(topic)">
+      <ion-img [src]="topic.author.avatar_url"></ion-img>
+      <h2>{{topic.title}}</h2>
+      <p class="summary">
+        <span *ngIf="!topic.top && !topic.good" class="tab">{{topic.tab}}</span>
+        <span *ngIf="topic.top" class="tab hl">置顶</span>
+        <span *ngIf="topic.good && !topic.top" class="tab hl">精华</span>
+        {{topic.author.loginname}}
+        <span class="item-note ago" am-time-ago="topic.last_reply_at">
+        </span>
+      </p>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

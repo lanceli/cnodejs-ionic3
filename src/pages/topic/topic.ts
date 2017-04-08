@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { UserPage } from '../user/user';
 import { Topic } from '../topics/topic';
 import { TopicService } from '../../providers/topic-service';
 /*
@@ -31,7 +32,15 @@ export class TopicPage {
 
 	getTopic(): void {
 		this.topicService.getTopicById(this.navParams.get('id')).then(
-			topic => this.topic = topic
+			(topic) => {
+        this.topic = topic
+        console.log(this.topic)
+      }
 		);
 	}
+
+  gotoUser(loginName: String): void {
+    console.log('goto user', loginName);
+		this.navCtrl.push(UserPage, {loginName: loginName})
+  }
 }

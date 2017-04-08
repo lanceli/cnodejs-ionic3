@@ -14,15 +14,34 @@
 
 
 <ion-content padding>
-
-    <div class="topic-info" *ngIf="topic">
-      {{ topic.id}}
-      <div class="title">
-        {{ topic.title}}
-      </div>
-      <div class="content">
-        {{ topic.content}}
+  <div class="topic-info" *ngIf="topic">
+		<div class="row topic">
+      <div class="col col90">
+        <h4 class="title">{{topic.title}}</h4>
+        <div class="summary">
+          <strong>
+           <a (click)="gotoUser(topic.author.loginname)">
+              <img [src]="topic.author.avatar_url" class="avatar">
+              {{topic.author.loginname}}</a>
+          </strong>
+          <span class="item-note" am-time-ago="topic.last_reply_at"></span>
+        </div>
+        <div class="topic-content" [innerHTML]="topic.content">
+        </div>
       </div>
     </div>
+
+		<ion-list class="replies">
+			<ion-item *ngFor="let reply of topic.replies">
+				 {{reply.author.loginname}}
+				 <div class="reply-content" [innerHTML]="reply.content"></div>
+				 <span class="item-note cnode" *ngIf="reply.ups.length > 0">
+					 <i class="icon ion-thumbsup"></i>
+					 {{reply.ups.length}}
+					 &nbsp;
+				 </span>
+			</ion-item>
+		</ion-list>
+  </div>
 
 </ion-content>

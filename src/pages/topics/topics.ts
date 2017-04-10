@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
 import { Topic } from './topic';
 
@@ -12,6 +12,10 @@ import { TopicService } from '../../providers/topic-service';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+
+@IonicPage({
+	name: 'topics'
+})
 @Component({
   selector: 'page-topics',
   templateUrl: 'topics.html',
@@ -35,7 +39,7 @@ export class TopicsPage {
 
 	onSelect(topic: Topic): void {
 		console.log(topic)
-		this.navCtrl.push(TopicPage, {id: topic.id})
+		this.navCtrl.push('topic', {id: topic.id})
 	}
 
 	getTopics(): void {

@@ -1,9 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Deeplinks } from 'ionic-native';
-
-import { TopicsPage } from '../pages/topics/topics';
-import { UserPage } from '../pages/user/user';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 
 @Component({
@@ -12,38 +10,31 @@ import { UserPage } from '../pages/user/user';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = TopicsPage;
+  rootPage = 'TopicsPage';
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform) {
-    this.initializeApp();
-  }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
+  constructor(public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      statusBar.styleDefault();
+      splashScreen.hide();
     });
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+  initializeApp() {
   }
 
   ngAfterViewInit() {
 		console.log('ng after view init')
-		Deeplinks.routeWithNavController(this.nav, {
-			'/topics': TopicsPage,
-			'/user/:loginname': UserPage
-		}).subscribe((match) => {
-			console.log('Successfully routed', match);
-		}, (nomatch) => {
-			console.warn('Unmatched Route', nomatch);
-		});
+	//Deeplinks.routeWithNavController(this.nav, {
+	//	'/topics': TopicsPage,
+	//	'/user/:loginname': UserPage
+	//}).subscribe((match) => {
+	//	console.log('Successfully routed', match);
+	//}, (nomatch) => {
+	//	console.warn('Unmatched Route', nomatch);
+	//});
   }
 }

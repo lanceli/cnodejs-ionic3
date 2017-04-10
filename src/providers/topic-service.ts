@@ -30,7 +30,7 @@ export class TopicService {
       .then(
         (resposne) => {
           console.log(resposne);
-          return resposne.json().data as Topic[]
+          return resposne.json().data as Topic
         }
       )
   }

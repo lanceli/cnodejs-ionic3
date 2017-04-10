@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
 import { UserPage } from '../user/user';
 import { Topic } from '../topics/topic';
@@ -10,6 +10,9 @@ import { TopicService } from '../../providers/topic-service';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+@IonicPage({
+	name: 'topic'
+})
 @Component({
   selector: 'page-topic',
   templateUrl: 'topic.html',
@@ -41,6 +44,6 @@ export class TopicPage {
 
   gotoUser(loginName: String): void {
     console.log('goto user', loginName);
-		this.navCtrl.push(UserPage, {loginName: loginName})
+		this.navCtrl.push('user', {loginName: loginName})
   }
 }

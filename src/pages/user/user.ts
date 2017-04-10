@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
 import { User } from '../../classes/user';
 import { UserService } from '../../providers/user-service';
@@ -9,6 +9,9 @@ import { UserService } from '../../providers/user-service';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+@IonicPage({
+	name: 'user'
+})
 @Component({
   selector: 'page-user',
   templateUrl: 'user.html',

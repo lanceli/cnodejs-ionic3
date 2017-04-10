@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
-import { UserPage } from '../user/user';
 import { Topic } from '../topics/topic';
 import { TopicService } from '../../providers/topic-service';
 /*
@@ -11,12 +10,12 @@ import { TopicService } from '../../providers/topic-service';
   Ionic pages and navigation.
 */
 @IonicPage({
-	name: 'topic'
+  name: 'topic'
 })
 @Component({
   selector: 'page-topic',
   templateUrl: 'topic.html',
-	providers: [TopicService]
+  providers: [TopicService]
 })
 export class TopicPage {
 
@@ -29,21 +28,21 @@ export class TopicPage {
     console.log('ionViewDidLoad TopicPage');
   }
 
-	ngOnInit(): void {
-		this.getTopic()
-	}
+  ngOnInit(): void {
+    this.getTopic()
+  }
 
-	getTopic(): void {
-		this.topicService.getTopicById(this.navParams.get('id')).then(
-			(topic) => {
+  getTopic(): void {
+    this.topicService.getTopicById(this.navParams.get('id')).then(
+      (topic) => {
         this.topic = topic
         console.log(this.topic)
       }
-		);
-	}
+    );
+  }
 
   gotoUser(loginName: String): void {
     console.log('goto user', loginName);
-		this.navCtrl.push('user', {loginName: loginName})
+    this.navCtrl.push('user', {loginName: loginName})
   }
 }

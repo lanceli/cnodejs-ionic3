@@ -10,7 +10,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage = 'TopicsPage';
+  rootPage = 'topics';
 
   pages: Array<{title: string, component: any}>;
 
@@ -27,14 +27,6 @@ export class MyApp {
   }
 
   ngAfterViewInit() {
-		console.log('ng after view init')
-	//Deeplinks.routeWithNavController(this.nav, {
-	//	'/topics': TopicsPage,
-	//	'/user/:loginname': UserPage
-	//}).subscribe((match) => {
-	//	console.log('Successfully routed', match);
-	//}, (nomatch) => {
-	//	console.warn('Unmatched Route', nomatch);
-	//});
+    console.log('ng after view init')
   }
 }

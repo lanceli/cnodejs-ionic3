@@ -10,35 +10,36 @@ import { UserService } from '../../providers/user-service';
   Ionic pages and navigation.
 */
 @IonicPage({
-	name: 'user'
+  name: 'user',
+  segment: 'user/:loginName'
 })
 @Component({
   selector: 'page-user',
   templateUrl: 'user.html',
-	providers: [UserService]
+  providers: [UserService]
 })
 export class UserPage {
 
-	user: User
+  user: User
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService) {
-	}
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserPage');
   }
 
-	ngOnInit(): void {
-		this.getUser()
-	}
+  ngOnInit(): void {
+    this.getUser()
+  }
 
-	getUser(): void {
-		this.userService.getByLoginName(this.navParams.get('loginName')).then(
-			(user) => {
+  getUser(): void {
+    this.userService.getByLoginName(this.navParams.get('loginName')).then(
+      (user) => {
         this.user = user
         console.log(this.user)
       }
-		);
-	}
+    );
+  }
 
 }

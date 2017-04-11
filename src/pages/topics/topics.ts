@@ -3,7 +3,6 @@ import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
 import { Topic } from './topic';
 
-import { TopicPage } from '../topic/topic';
 import { TopicService } from '../../providers/topic-service';
 
 /*
@@ -47,6 +46,16 @@ export class TopicsPage {
 			topics => this.topics = topics
 		);
 	}
+
+  doRefresh(refresher): void {
+    console.log('do refresh')
+    this.topicService.refresh().then(
+      (topics) => {
+        this.topics = topics;
+        refresher.complete();
+      }
+    );
+  }
 
   loadMore(infiniteScroll): void {
     console.log('do infinite')

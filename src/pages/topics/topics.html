@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list [virtualScroll]="topics" class="topics">
     <ion-item *virtualItem="let topic" (click)="onSelect(topic)">
       <ion-img [src]="topic.author.avatar_url"></ion-img>

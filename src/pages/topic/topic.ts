@@ -10,7 +10,8 @@ import { TopicService } from '../../providers/topic-service';
   Ionic pages and navigation.
 */
 @IonicPage({
-  name: 'topic'
+  name: 'topic',
+  segment: 'topic/:id'
 })
 @Component({
   selector: 'page-topic',
@@ -32,8 +33,16 @@ export class TopicPage {
     this.getTopic()
   }
 
-  getTopic(): void {
-    this.topicService.getTopicById(this.navParams.get('id')).then(
+  doRefresh(refresher): void {
+    this.getTopic().then(
+      (topic) => {
+        refresher.complete();
+      }
+    );
+  }
+
+  getTopic(): Promise<void> {
+    return this.topicService.getTopicById(this.navParams.get('id')).then(
       (topic) => {
         this.topic = topic
         console.log(this.topic)

@@ -17,7 +17,7 @@ export class TopicService {
   private topicUrl: string = 'https://cnodejs.org/api/v1/topic'
   private currentTab: string = 'all'
   private nextPage: number = 2
-  //private hasNextPage: boolean = true
+  private hasNextPage: boolean = true
   topics: Topic[] = []
 
   constructor(public http: Http) {
@@ -45,10 +45,25 @@ export class TopicService {
       );
   }
 
+  refresh(): Promise<Topic[]> {
+    console.log(`current tab: ${this.currentTab}, page number 1`);
+    return this.getTopics(this.currentTab, 1).then(
+      (topics) => {
+        this.nextPage = 2
+        this.hasNextPage = true
+        this.topics = topics
+        return Promise.resolve(this.topics);
+      }
+    );
+  }
+
   pagination(): Promise<Topic[]> {
-    console.log(`current tab: ${this.currentTab}, next page ${this.nextPage}`);
+    console.log(`current tab: ${this.currentTab}, next page number ${this.nextPage}`);
     return this.getTopics(this.currentTab, this.nextPage).then(
       (topics) => {
+        if (topics.length < 10) {
+          this.hasNextPage = false
+        }
         this.nextPage++;
         this.topics = this.topics.concat(topics)
         return Promise.resolve(this.topics);

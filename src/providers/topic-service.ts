@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
-import { Topic } from '../pages/topics/topic';
+import { Topic } from '../classes/topic';
 
 /*
   Generated class for the TopicService provider.
@@ -15,7 +15,7 @@ import { Topic } from '../pages/topics/topic';
 export class TopicService {
   private topicsUrl: string = 'https://cnodejs.org/api/v1/topics'
   private topicUrl: string = 'https://cnodejs.org/api/v1/topic'
-  private currentTab: string = 'all'
+  currentTab: string = 'all'
   private nextPage: number = 2
   private hasNextPage: boolean = true
   topics: Topic[] = []

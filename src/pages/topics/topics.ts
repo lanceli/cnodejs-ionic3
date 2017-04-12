@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
-import { Topic } from './topic';
+import { Topic } from '../../classes/topic';
 
 import { TopicService } from '../../providers/topic-service';
 
@@ -13,12 +13,13 @@ import { TopicService } from '../../providers/topic-service';
 */
 
 @IonicPage({
-	name: 'topics'
+  name: 'topics',
+  segment: 'topics/:tab'
 })
 @Component({
   selector: 'page-topics',
   templateUrl: 'topics.html',
-	providers: [TopicService]
+  providers: [TopicService]
 })
 export class TopicsPage {
 
@@ -28,31 +29,39 @@ export class TopicsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private topicService: TopicService) {
   }
 
-	ngOnInit(): void {
-		this.getTopics()
-	}
+  ngOnInit(): void {
+    let newTab = this.navParams.get('tab');
+    if (newTab) {
+      console.log('changing tab');
+      this.topicService.currentTab = newTab;
+    }
+    console.log('current tab', this.topicService.currentTab);
+    this.doRefresh();
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TopicsPage');
   }
 
-	onSelect(topic: Topic): void {
-		console.log(topic)
-		this.navCtrl.push('topic', {id: topic.id})
-	}
+  onSelect(topic: Topic): void {
+    console.log(topic)
+    this.navCtrl.push('topic', {id: topic.id})
+  }
 
-	getTopics(): void {
-		this.topicService.getTopics().then(
-			topics => this.topics = topics
-		);
-	}
+  getTopics(): void {
+    this.topicService.getTopics().then(
+      topics => this.topics = topics
+    );
+  }
 
-  doRefresh(refresher): void {
+  doRefresh(refresher = undefined): void {
     console.log('do refresh')
     this.topicService.refresh().then(
       (topics) => {
         this.topics = topics;
-        refresher.complete();
+        if (refresher) {
+          refresher.complete();
+        }
       }
     );
   }

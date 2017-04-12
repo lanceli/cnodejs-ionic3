@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage } from 'ionic-angular';
 
-import { Topic } from '../topics/topic';
+import { Topic } from '../../classes/topic';
 import { TopicService } from '../../providers/topic-service';
 /*
   Generated class for the Topic page.

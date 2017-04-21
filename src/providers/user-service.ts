@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
@@ -14,6 +14,8 @@ import { User } from '../classes/user';
 @Injectable()
 export class UserService {
   private userUrl: string = 'https://cnodejs.org/api/v1/user'
+  private authUrl: string = 'https://cnodejs.org/api/v1/accesstoken'
+  private user: User
 
   constructor(public http: Http) {
     console.log('Hello UserService Provider');
@@ -30,4 +32,28 @@ export class UserService {
       )
   }
 
+  login(accesstoken: string): Promise<User> {
+    let body = JSON.stringify({
+      accesstoken: accesstoken
+    });
+    let headers = new Headers({
+      'content-type': 'application/json'
+    });
+    let options = new RequestOptions({
+      headers: headers
+    });
+    return this.http.post(this.authUrl, body, options).toPromise().then((response) => {
+      //$log.debug('post accesstoken:', response);
+      let authResp  = response.json();
+      this.getByLoginName(authResp.loginname).then((user) => {
+        this.user = user;
+        this.user.id = authResp.id;
+        this.user.accesstoken = accesstoken;
+        this.user.loginname = authResp.loginname;
+
+        //Storage.set(storageKey, user);
+      });
+      return this.user;
+    });
+  }
 }

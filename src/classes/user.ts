@@ -1,5 +1,7 @@
 export class User {
-	loginname: string;
+  id?: string;
+  accesstoken?: string;
+  loginname: string;
   avatar_url: string;
   githubUsername: string;
   create_at: string;

@@ -23,11 +23,13 @@
         <h4 class="title">{{topic.title}}</h4>
         <div class="summary">
           <strong>
-            <a (click)="gotoUser(topic.author.loginname)">
+            <a (click)="gotoUserPage(topic.author.loginname)">
               <img [src]="topic.author.avatar_url" class="avatar">
               {{topic.author.loginname}}</a>
           </strong>
-          <span class="item-note" am-time-ago="topic.last_reply_at"></span>
+          <span class="item-note">
+            {{ topic.last_reply_at | amTimeAgo }}
+          </span>
         </div>
         <div class="topic-content" [innerHTML]="topic.content">
         </div>
@@ -38,6 +40,9 @@
       <ion-item *ngFor="let reply of topic.replies">
          {{reply.author.loginname}}
          <div class="reply-content" [innerHTML]="reply.content"></div>
+         <span class="item-note">
+            {{ reply.create_at | amTimeAgo }}
+         </span>
          <span class="item-note cnode" *ngIf="reply.ups.length > 0">
            <i class="icon ion-thumbsup"></i>
            {{reply.ups.length}}

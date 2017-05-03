@@ -21,13 +21,18 @@ export class UserService {
     console.log('Hello UserService Provider');
   }
 
+  getCurrentUser(): User {
+    console.log('current user:', this.user);
+    return this.user;
+  }
+
   getByLoginName(loginName: string): Promise<User> {
     return this.http.get(`${this.userUrl}/${loginName}`)
       .toPromise()
       .then(
         (resposne) => {
           console.log(resposne);
-          return resposne.json().data as User
+          return resposne.json().data as User;
         }
       )
   }
@@ -45,15 +50,16 @@ export class UserService {
     return this.http.post(this.authUrl, body, options).toPromise().then((response) => {
       //$log.debug('post accesstoken:', response);
       let authResp  = response.json();
-      this.getByLoginName(authResp.loginname).then((user) => {
+      this.user = authResp as User;
+      return this.getByLoginName(authResp.loginname).then((user) => {
         this.user = user;
         this.user.id = authResp.id;
         this.user.accesstoken = accesstoken;
         this.user.loginname = authResp.loginname;
+        return this.user;
 
         //Storage.set(storageKey, user);
       });
-      return this.user;
     });
   }
 }

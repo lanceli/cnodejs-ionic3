@@ -22,7 +22,11 @@ export class TopicPage {
 
   topic: Topic
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private topicService: TopicService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private topicService: TopicService
+  ) {
   }
 
   ionViewDidLoad() {
@@ -30,7 +34,7 @@ export class TopicPage {
   }
 
   ngOnInit(): void {
-    this.getTopic()
+    this.getTopic();
   }
 
   doRefresh(refresher): void {
@@ -50,7 +54,7 @@ export class TopicPage {
     );
   }
 
-  gotoUser(loginName: String): void {
+  gotoUserPage(loginName: String): void {
     console.log('goto user', loginName);
     this.navCtrl.push('user', {loginName: loginName})
   }

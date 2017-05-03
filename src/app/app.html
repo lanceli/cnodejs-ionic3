@@ -7,13 +7,22 @@
 
   <ion-content>
     <ion-list>
-      <ion-item (click)="login()" *ngIf="loginName == null">
+      <ion-item *ngIf="user" menuClose (click)="gotoUserPage(user.loginname)">
+        <ion-icon name="person" item-left></ion-icon>
+        {{user.loginname}}
+      </ion-item>
+      <ion-item *ngIf="user" menuClose (click)="gotoMessagePage()">
+        <ion-icon name="mail" item-left></ion-icon>
+        我的消息
+      </ion-item>
+      <ion-item (click)="login()" *ngIf="user == null">
         登录
         <i class="icon ion-looping" ng-if="processing"></i>
       </ion-item>
-      <ion-item class="item-divider">
+
+      <ion-item-divider color="light">
         板块
-      </ion-item>
+      </ion-item-divider>
       <ion-item *ngFor="let tab of tabs" (click)="openTab(tab)" menuClose>
         {{tab.label}}
       </ion-item>

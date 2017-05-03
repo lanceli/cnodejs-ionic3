@@ -42,4 +42,9 @@ export class UserPage {
     );
   }
 
+  gotoTopicPage(id: string): void {
+    console.log('go to topic', id);
+    this.navCtrl.push('topic', {id: id});
+  }
+
 }

@@ -1,0 +1,55 @@
+<!--
+  Generated template for the Message page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Message</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item class="item-divider">
+      未读消息
+    </ion-item>
+    <ng-container  *ngIf="!!messages">
+      <ion-item *ngFor="let message of messages.hasnot_read_messages">
+        <a (click)="gotoUserPage(message.author.loginname)">{{message.author.loginname}}</a>
+        <ng-container *ngIf="message.type == 'at'">
+          回复了
+        </ng-container>
+        <ng-container *ngIf="message.type == 'reply'">
+          在
+        </ng-container>
+        <a (click)="gotoTopicPage(message.topic.id)">{{message.topic.title}}</a>
+        <ng-container *ngIf="message.type == 'reply'">
+          中@了你
+        </ng-container>
+      </ion-item>
+    </ng-container>
+    <ion-item class="item-divider">
+      已读消息
+    </ion-item>
+    <ng-container  *ngIf="!!messages">
+      <ion-item *ngFor="let message of messages.has_read_messages">
+        <a (click)="gotoUserPage(message.author.loginname)">{{message.author.loginname}}</a>
+        <ng-container *ngIf="message.type == 'at'">
+          回复了
+        </ng-container>
+        <ng-container *ngIf="message.type == 'reply'">
+          在
+        </ng-container>
+        <a (click)="gotoTopicPage(message.topic.id)">{{message.topic.title}}</a>
+        <ng-container *ngIf="message.type == 'reply'">
+          中@了你
+        </ng-container>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

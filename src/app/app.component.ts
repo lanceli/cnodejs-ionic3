@@ -2,14 +2,21 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
 import { TabsService } from '../providers/tabs-service';
 import { UserService } from '../providers/user-service';
+import { MessageService } from '../providers/message-service';
 import { Tab } from '../classes/tab';
+import { User } from '../classes/user';
 
 
 @Component({
   templateUrl: 'app.html',
-  providers: [TabsService, UserService]
+  providers: [
+    TabsService,
+    UserService,
+    MessageService
+  ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -18,7 +25,18 @@ export class MyApp {
 
   tabs: Tab[];
 
-  constructor(public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private tabsService: TabsService, private userService: UserService, private alertCtrl: AlertController) {
+  user: User;
+  messagesCount: 0;
+
+  constructor(
+    public platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    private tabsService: TabsService,
+    private userService: UserService,
+    private messageService: MessageService,
+    private alertCtrl: AlertController
+  ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -32,6 +50,7 @@ export class MyApp {
 
   ngAfterViewInit() {
     console.log('ng after view init');
+
     this.tabs = this.tabsService.getTabs();
   }
 
@@ -40,6 +59,32 @@ export class MyApp {
     this.nav.setRoot('topics', {
       tab: tab.value
     });
+  }
+
+  gotoUserPage(loginName: String) {
+    console.log('goto user', loginName);
+    this.nav.setRoot('user', {loginName: loginName})
+  }
+
+  gotoMessagePage() {
+    console.log('go to message page')
+    this.nav.setRoot('message');
+  }
+
+  getMessageCount() {
+    this.messageService.getMessageCount().then((response) => {
+      this.messagesCount = response.data;
+      //setBadge($scope.messagesCount);
+    }, function(response) {
+      //$log.log('get messages count fail', response);
+    });
+  };
+
+  // login action callback
+  loginCallback(user: User) {
+    console.log('login callback', arguments);
+    this.user = user;
+    this.getMessageCount();
   }
 
   login() {
@@ -67,10 +112,9 @@ export class MyApp {
             console.log(data);
             if (data.token) {
               this.userService.login(data.token).then((response) => {
-                console.log('done')
+                this.loginCallback(response);
               });
             }
-
           }
         }
       ]

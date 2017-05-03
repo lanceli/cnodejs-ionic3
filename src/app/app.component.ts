@@ -3,6 +3,8 @@ import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { ConfigService } from '../providers/config-service';
+
 import { TabsService } from '../providers/tabs-service';
 import { UserService } from '../providers/user-service';
 import { MessageService } from '../providers/message-service';
@@ -32,6 +34,7 @@ export class MyApp {
     public platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
+    private configService: ConfigService,
     private tabsService: TabsService,
     private userService: UserService,
     private messageService: MessageService,
@@ -51,6 +54,9 @@ export class MyApp {
   ngAfterViewInit() {
     console.log('ng after view init');
 
+    this.userService.getCurrentUser().then((user) => {
+      this.user = user;
+    });
     this.tabs = this.tabsService.getTabs();
   }
 
@@ -89,36 +95,43 @@ export class MyApp {
 
   login() {
     console.log('login');
-    let alert = this.alertCtrl.create({
-      title: '输入Access Token',
-      subTitle: 'PC端登录cnodejs.org后，在设置页可以找到Access Token',
-      inputs: [
-        {
-          name: 'token',
-          placeholder: 'Token'
-        }
-      ],
-      buttons: [
-        {
-          text: '取消',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
+    // login automatic if have token
+    if (this.configService.token) {
+      this.userService.login(this.configService.token).then((response) => {
+        this.loginCallback(response);
+      });
+    } else {
+      let alert = this.alertCtrl.create({
+        title: '输入Access Token',
+        subTitle: 'PC端登录cnodejs.org后，在设置页可以找到Access Token',
+        inputs: [
+          {
+            name: 'token',
+            placeholder: 'Token'
           }
-        },
-        {
-          text: '提交',
-          handler: data => {
-            console.log(data);
-            if (data.token) {
-              this.userService.login(data.token).then((response) => {
-                this.loginCallback(response);
-              });
+        ],
+        buttons: [
+          {
+            text: '取消',
+            role: 'cancel',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: '提交',
+            handler: data => {
+              console.log(data);
+              if (data.token) {
+                this.userService.login(data.token).then((response) => {
+                  this.loginCallback(response);
+                });
+              }
             }
           }
-        }
-      ]
-    });
-    alert.present();
+        ]
+      });
+      alert.present();
+    }
   }
 }

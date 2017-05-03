@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
+import { ConfigService } from '../providers/config-service';
 import { Topic } from '../classes/topic';
 
 /*
@@ -13,15 +14,17 @@ import { Topic } from '../classes/topic';
 */
 @Injectable()
 export class TopicService {
-  private topicsUrl: string = 'https://cnodejs.org/api/v1/topics'
-  private topicUrl: string = 'https://cnodejs.org/api/v1/topic'
+  private topicsUrl: string
+  private topicUrl: string
   currentTab: string = 'all'
   private nextPage: number = 2
   private hasNextPage: boolean = true
   topics: Topic[] = []
 
-  constructor(public http: Http) {
+  constructor(public http: Http, public configService: ConfigService) {
     console.log('Hello TopicService Provider');
+    this.topicsUrl = configService.api + 'topics';
+    this.topicUrl = configService.api + 'topic';
   }
 
   getTopicById(id: string): Promise<Topic>{

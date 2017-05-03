@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
+import { ConfigService } from './config-service';
 import { User } from '../classes/user';
 
 /*
@@ -13,17 +15,30 @@ import { User } from '../classes/user';
 */
 @Injectable()
 export class UserService {
-  private userUrl: string = 'https://cnodejs.org/api/v1/user'
-  private authUrl: string = 'https://cnodejs.org/api/v1/accesstoken'
+  private userUrl: string
+  private authUrl: string
   private user: User
+  private storageKey = 'user'
 
-  constructor(public http: Http) {
+  constructor(public http: Http, public storage: Storage, public configService: ConfigService) {
     console.log('Hello UserService Provider');
+    this.userUrl = configService.api + 'user';
+    this.authUrl = configService.api + 'accesstoken';
   }
 
-  getCurrentUser(): User {
+  getCurrentUser(): Promise<User> {
     console.log('current user:', this.user);
-    return this.user;
+    if (this.user) {
+      return new Promise((resolve, reject) => {
+        resolve(this.user);
+      });
+    } else {
+      return this.storage.get(this.storageKey).then((user) => {
+        console.log('user storage', user);
+        this.user = user;
+        return this.user;
+      });
+    }
   }
 
   getByLoginName(loginName: string): Promise<User> {
@@ -56,9 +71,11 @@ export class UserService {
         this.user.id = authResp.id;
         this.user.accesstoken = accesstoken;
         this.user.loginname = authResp.loginname;
-        return this.user;
 
-        //Storage.set(storageKey, user);
+        this.storage.ready().then(() => {
+          this.storage.set(this.storageKey, user);
+        });
+        return this.user;
       });
     });
   }

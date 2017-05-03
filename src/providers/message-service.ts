@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
+import { ConfigService } from './config-service';
 import { Message, Messages } from '../classes/message';
 import { UserService } from './user-service';
 
@@ -14,41 +15,45 @@ import { UserService } from './user-service';
 */
 @Injectable()
 export class MessageService {
-  private countUrl: string = 'https://cnodejs.org/api/v1/message/count'
-  private messagesUrl: string = 'https://cnodejs.org/api/v1/messages'
+  private countUrl: string
+  private messagesUrl: string
 
-  constructor(public http: Http, private userService: UserService) {
+  constructor(public http: Http, public configService: ConfigService, private userService: UserService) {
     console.log('Hello MessageService Provider');
+    this.countUrl = this.configService.api + 'message/count';
+    this.messagesUrl = this.configService.api + 'messages';
   }
 
   getMessageCount(): Promise<any> {
 
     console.log('get messages count');
-    let currentUser = this.userService.getCurrentUser();
-    return this.http.get(this.countUrl, {
-        params: {
-          accesstoken: currentUser.accesstoken
-        }
-      }).toPromise().then(
-        (resposne) => {
-          console.log(resposne);
-          return resposne.json().data;
-        }
-      )
+    return this.userService.getCurrentUser().then((currentUser) => {
+      return this.http.get(this.countUrl, {
+          params: {
+            accesstoken: currentUser.accesstoken
+          }
+        }).toPromise().then(
+          (resposne) => {
+            console.log(resposne);
+            return resposne.json().data;
+          }
+       );
+    });
   }
 
   getMessages(): Promise<Messages> {
     console.log('get messages');
-    let currentUser = this.userService.getCurrentUser();
-    return this.http.get(this.messagesUrl, {
-        params: {
-          accesstoken: currentUser.accesstoken
-        }
-      }).toPromise().then(
-        (resposne) => {
-          return resposne.json().data as Messages;
-        }
-    );
+    return this.userService.getCurrentUser().then((currentUser) => {
+      return this.http.get(this.messagesUrl, {
+          params: {
+            accesstoken: currentUser.accesstoken
+          }
+        }).toPromise().then(
+          (resposne) => {
+            return resposne.json().data as Messages;
+          }
+      );
+    });
   }
 
 }

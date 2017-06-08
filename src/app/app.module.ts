@@ -11,9 +11,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyApp } from './app.component';
 import { ConfigService } from '../providers/config-service';
 
+import { NewTopicModal } from '../pages/new-topic-modal/new-topic-modal';
+
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    NewTopicModal
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,8 @@ import { ConfigService } from '../providers/config-service';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    NewTopicModal
   ],
   providers: [
     StatusBar,

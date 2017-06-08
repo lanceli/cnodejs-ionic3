@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, IonicPage, ModalController } from 'ionic-angular';
 
 import { Topic } from '../../classes/topic';
+import { NewTopicModal } from '../new-topic-modal/new-topic-modal';
 
 import { TopicService } from '../../providers/topic-service';
 
@@ -26,7 +27,12 @@ export class TopicsPage {
   topics: Topic[] = [];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private topicService: TopicService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private topicService: TopicService,
+    public modalCtrl: ModalController
+  ) {
   }
 
   ngOnInit(): void {
@@ -67,13 +73,20 @@ export class TopicsPage {
   }
 
   loadMore(infiniteScroll): void {
-    console.log('do infinite')
+    console.log('do infinite');
     this.topicService.pagination().then(
       (topics) => {
         this.topics = this.topics.concat(topics)
         infiniteScroll.complete();
       }
     );
+  }
+
+  showNewTopicModal (): void {
+    console.log('new topic modal 123');
+
+    let modal = this.modalCtrl.create(NewTopicModal);
+    modal.present();
   }
 
 }

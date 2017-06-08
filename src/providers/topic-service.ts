@@ -6,6 +6,8 @@ import 'rxjs/add/operator/toPromise';
 import { ConfigService } from '../providers/config-service';
 import { Topic } from '../classes/topic';
 
+import { UserService } from './user-service';
+
 /*
   Generated class for the TopicService provider.
 
@@ -21,7 +23,11 @@ export class TopicService {
   private hasNextPage: boolean = true
   topics: Topic[] = []
 
-  constructor(public http: Http, public configService: ConfigService) {
+  constructor(
+      public http: Http,
+      public configService: ConfigService,
+      private userService: UserService
+    ) {
     console.log('Hello TopicService Provider');
     this.topicsUrl = configService.api + 'topics';
     this.topicUrl = configService.api + 'topic';
@@ -72,6 +78,11 @@ export class TopicService {
         return Promise.resolve(this.topics);
       }
     );
+  }
+  saveNewTopic(newTopicData) {
+    return this.userService.getCurrentUser().then((currentUser) => {
+      return this.http.post(`${this.topicsUrl}?accesstoken=${currentUser.accesstoken}`, newTopicData).toPromise()
+    })
   }
 
 }

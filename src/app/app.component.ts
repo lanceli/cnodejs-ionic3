@@ -23,7 +23,7 @@ import { User } from '../classes/user';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage = 'topics';
+  rootPage: any;
 
   tabs: Tab[];
 
@@ -51,6 +51,10 @@ export class MyApp {
   initializeApp() {
   }
 
+  ngOnInit() {
+    console.log('ng on init');
+  }
+
   ngAfterViewInit() {
     console.log('ng after view init');
 
@@ -58,6 +62,9 @@ export class MyApp {
       this.user = user;
     });
     this.tabs = this.tabsService.getTabs();
+    this.nav.setRoot('topics', {
+      tab: this.tabs[0].value
+    });
   }
 
   openTab(tab: any) {

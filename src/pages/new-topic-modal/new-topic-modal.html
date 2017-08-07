@@ -21,17 +21,17 @@
   <form>
     <div class="list">
       <label class="item item-input item-select">
-        <select ([ngModel])="newTopicData.tab" class="topic-tabs">
+        <select [(ngModel)]="newTopicData.tab" class="topic-tabs" name="tab">
          <ng-container *ngFor="let tab of tabs">
             <option *ngIf="tab.value != undefined && tab.value != 'all'" value="{{tab.value}}">{{tab.label}}</option>
          </ng-container>
         </select>
       </label>
       <label class="item item-input">
-        <input type="text" ([ngModel])="newTopicData.title" placeholder="标题10字以上">
+        <input type="text" [(ngModel)]="newTopicData.title" name="title" placeholder="标题10字以上">
       </label>
       <label class="item item-input">
-        <textarea placeholder="内容" ([ngModel])="newTopicData.content" rows="5" class="content"></textarea>
+        <textarea placeholder="内容" [(ngModel)]="newTopicData.content" name="content" rows="5" class="content"></textarea>
       </label>
     </div>
   </form>

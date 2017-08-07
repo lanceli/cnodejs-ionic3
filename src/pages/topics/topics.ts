@@ -83,7 +83,7 @@ export class TopicsPage {
   }
 
   showNewTopicModal (): void {
-    console.log('new topic modal 123');
+    console.log('new topic modal');
 
     let modal = this.modalCtrl.create(NewTopicModal);
     modal.present();

@@ -25,12 +25,12 @@ import { Tab } from '../../classes/tab';
 export class NewTopicModal {
 
   tabs: Tab[];
-  newTopicData: {
+  newTopicData: any = {
     tab: 'share',
     title: '',
     content: ''
   };
-  newTopicId: '';
+  newTopicId:string;
 
   constructor(
       private userService: UserService,
@@ -52,7 +52,7 @@ export class NewTopicModal {
     console.log('new topic data:', this.newTopicData);
     this.topicService.saveNewTopic(this.newTopicData).then((response) => {
       this.newTopicId = response['topic_id'];
-      //$scope.closeNewTopicModal();
+      this.closeModal();
     });
   };
 

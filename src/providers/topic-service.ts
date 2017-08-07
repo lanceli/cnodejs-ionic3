@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
@@ -80,8 +80,15 @@ export class TopicService {
     );
   }
   saveNewTopic(newTopicData) {
+    let body = JSON.stringify(newTopicData);
+    let headers = new Headers({
+      'content-type': 'application/json'
+    });
+    let options = new RequestOptions({
+      headers: headers
+    });
     return this.userService.getCurrentUser().then((currentUser) => {
-      return this.http.post(`${this.topicsUrl}?accesstoken=${currentUser.accesstoken}`, newTopicData).toPromise()
+      return this.http.post(`${this.topicsUrl}?accesstoken=${currentUser.accesstoken}`, body, options).toPromise()
     })
   }
 
